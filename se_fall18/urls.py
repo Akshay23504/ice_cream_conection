@@ -15,9 +15,13 @@ Including another URLconf
 """
 
 from django.conf.urls import url
-from django.urls import include
+from django.contrib import admin
+from django.urls import include, path
 
 urlpatterns = [
-    url(r'^', include('ice_cream_conection.urls'))
+    url(r'^', include('ice_cream_conection.urls')),
+    url(r'^account/', include('social_django.urls')),
+    url(r'^account/', include('django.contrib.auth.urls')),
+    path('admin/', admin.site.urls),
 ]
 

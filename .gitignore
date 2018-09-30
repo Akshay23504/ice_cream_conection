@@ -90,4 +90,5 @@ local_settings.py
 db.sqlite3
 
 se_fall18/icc.cnf
+se_fall18/settings_confidential.py
 
