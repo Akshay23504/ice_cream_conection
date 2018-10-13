@@ -281,3 +281,8 @@ a:focus {
     color: #b0b3b4;
     font-size: 14px;
 }
+
+#terms_flag_div {
+    width: 50%;
+    margin: auto;
+}
