@@ -79,23 +79,24 @@
                         <li class="mdl-menu__item" data-val="driver">I am an ice cream truck driver</li>
                         <li class="mdl-menu__item" data-val="customer">I want ice cream</li>
                     </ul>
+                    <span id="choose_role_error">Please select a role</span>
                 </div>
 
                 <br/><br/>
                 <div id="terms_flag_div">
                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="terms_flag">
-                        <input type="checkbox" id="terms_flag" class="mdl-checkbox__input ">
+                        <input type="checkbox" id="terms_flag" class="mdl-checkbox__input">
                         <span class="mdl-checkbox__label ">I have read and accept the <a id="terms_flag_a_tag">Terms of Use</a> and <a href="# ">Privacy Policy</a></span>
                     </label>
+                    <br/><br/>
+                    <span id="terms_flag_error">Please accept the terms of use</span>
                 </div>
 
-                <br/><br/>
+                <br/><br/><br/>
                 <div class="tab-content">
                     <div class="tab-pane fade in active" id="register">
-                        <a href="{% url 'social:begin' 'google-oauth2' %}?next=/">
-                            <img id="signInButton"
-                                 src="{%  static 'images/btn_google_signin_dark_normal_web.png' %}"
-                                 onclick="document.getElementById('signInButton').src='{% static "images/btn_google_signin_dark_normal_web.png" %}'">
+                        <a href="{% url 'social:begin' 'google-oauth2' %}?next=/" id="google_login">
+                            <img id="signInButton" src="{%  static 'images/btn_google_signin_dark_normal_web.png' %}">
                         </a>
                     </div>
                 </div>
@@ -112,6 +113,8 @@
 <script src="{%  static 'js/material.min.js' %}"></script>
 <script src="{%  static 'js/getmdl-select.js' %}"></script>
 <script src="{%  static 'js/mdl-jquery-modal-dialog.js' %}"></script>
+<script src="{%  static 'js/login-validate.js' %}"></script>
+
 
 <script>
     //Google analytics.
@@ -132,6 +135,11 @@
 </script>
 
 <script>
+    $("#choose_role_error").hide();
+    $("#terms_flag_error").hide();
+</script>
+
+<script>
     var terms_text = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.';
     $('#terms_flag_a_tag').click(function () {
         showDialog({
@@ -139,6 +147,15 @@
             text: terms_text
         })
     });
+
+    $("#choose_role").change(function () {
+        $("#choose_role_error").hide();
+    });
+
+    $("#terms_flag").change(function () {
+        $("#terms_flag_error").hide();
+    });
+
 </script>
 
 </body>
