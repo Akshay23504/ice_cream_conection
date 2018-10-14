@@ -1,0 +1,65 @@
+{%  load static %}
+
+<!doctype HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <link rel="stylesheet" href="{%  static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue-deep_purple.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="{%  static 'css/material.min.css' %}">
+    <link rel="stylesheet" href="{%  static 'css/getmdl-select.scss' %}">
+    <link rel="stylesheet" href="{%  static 'css/mdl-jquery-modal-dialog.css' %}">
+    <title>Ice Cream CONEction - Customer Dashboard</title>
+</head>
+
+
+<body>
+<!-- Always shows a header, even in smaller screens. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title">Ice Cream CONEction</span>
+            <!-- Add spacer, to align navigation to the right -->
+            <div class="mdl-layout-spacer"></div>
+            <!-- Navigation. We hide it in small screens. -->
+            <nav class="mdl-navigation mdl-layout--large-screen-only">
+                <label for="user_name_label"></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="customer_logout_button">Logout</button>
+            </nav>
+        </div>
+    </header>
+    <main class="mdl-layout__content">
+        <div class="page-content"><!-- Your content goes here --></div>
+    </main>
+</div>
+
+<script src="{%  static 'js/jquery.min.js' %}"></script>
+<script src="{%  static 'js/bootstrap.min.js' %}"></script>
+<script src="{%  static 'js/material.min.js' %}"></script>
+<script src="{%  static 'js/getmdl-select.js' %}"></script>
+<script src="{%  static 'js/mdl-jquery-modal-dialog.js' %}"></script>
+<script src="{%  static 'js/cookie.js' %}"></script>
+<script src="{%  static 'js/login-validate.js' %}"></script>
+
+<script>
+    $(document).ready(function() {
+        if (Cookies.get('icc_customer_login') == null) {
+            window.location.replace("/login");
+        } else {
+            Cookies.set("icc_customer_login", Cookies.get("icc_customer_login")); // Reset
+           $("label[for='user_name_label']").html(Cookies.get("icc_customer_login"));
+        }
+    });
+
+    $('#customer_logout_button').click(function () {
+        Cookies.remove("icc_customer_login");
+        window.location.replace("/login");
+    });
+</script>
+
+</body>
+</html>

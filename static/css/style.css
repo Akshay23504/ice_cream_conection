@@ -287,6 +287,6 @@ a:focus {
     margin: auto;
 }
 
-#terms_flag_error, #choose_role_error {
+#terms_flag_error, #choose_role_error, #invalid_role_error {
     color: red;
 }

@@ -68,6 +68,7 @@
             <div class="mlt-content">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#" data-toggle="tab">Login / Signup</a></li>
+                    {{ invalid_role }}
                 </ul>
 
                 <br/><br/>
@@ -80,15 +81,20 @@
                         <li class="mdl-menu__item" data-val="customer">I want ice cream</li>
                     </ul>
                     <span id="choose_role_error">Please select a role</span>
+                    <span id="invalid_role_error">User email and role do not match</span>
                 </div>
 
                 <br/><br/>
                 <div id="terms_flag_div">
                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="terms_flag">
                         <input type="checkbox" id="terms_flag" class="mdl-checkbox__input">
-                        <span class="mdl-checkbox__label ">I have read and accept the <a id="terms_flag_a_tag">Terms of Use</a> and <a href="# ">Privacy Policy</a></span>
+                        <span class="mdl-checkbox__label ">I have read and accept the
+                            <a id="terms_flag_a_tag">Terms of Use</a> and <a href="# ">Privacy Policy</a></span>
                     </label>
-                    <br/><br/>
+                </div>
+
+                <br/>
+                <div>
                     <span id="terms_flag_error">Please accept the terms of use</span>
                 </div>
 
@@ -113,6 +119,7 @@
 <script src="{%  static 'js/material.min.js' %}"></script>
 <script src="{%  static 'js/getmdl-select.js' %}"></script>
 <script src="{%  static 'js/mdl-jquery-modal-dialog.js' %}"></script>
+<script src="{%  static 'js/cookie.js' %}"></script>
 <script src="{%  static 'js/login-validate.js' %}"></script>
 
 
@@ -137,6 +144,11 @@
 <script>
     $("#choose_role_error").hide();
     $("#terms_flag_error").hide();
+    $("#invalid_role_error").hide();
+    if (Cookies.get("icc_invalid_role") != null) {
+        $("#invalid_role_error").show();
+        Cookies.remove("icc_invalid_role");
+    }
 </script>
 
 <script>
@@ -150,6 +162,13 @@
 
     $("#choose_role").change(function () {
         $("#choose_role_error").hide();
+        $("#invalid_role_error").hide();
+        var href_val = $("#google_login").attr('href');
+        if ($("#choose_role").val().indexOf("driver") >= 0) {
+            $("#google_login").attr('href', href_val.split("?")[0] + "?next=dashboard/driver/")
+        } else {
+            $("#google_login").attr('href', href_val.split("?")[0] + "?next=dashboard/customer/")
+        }
     });
 
     $("#terms_flag").change(function () {
