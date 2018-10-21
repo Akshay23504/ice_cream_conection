@@ -1,8 +1,7 @@
 {%  load static %}
 
-<!doctype HTML>
+{# Do not write doctype #}
 <html>
-
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width,initial-scale=1" name="viewport">
@@ -12,6 +11,8 @@
     <link rel="stylesheet" href="{%  static 'css/material.min.css' %}">
     <link rel="stylesheet" href="{%  static 'css/getmdl-select.scss' %}">
     <link rel="stylesheet" href="{%  static 'css/mdl-jquery-modal-dialog.css' %}">
+    <link rel="stylesheet" href="{%  static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{%  static 'css/maps.css' %}">
     <title>Ice Cream CONEction - Driver Dashboard</title>
 </head>
 
@@ -33,7 +34,19 @@
         </div>
     </header>
     <main class="mdl-layout__content">
-        <div class="page-content"><!-- Your content goes here --></div>
+        <div class="page-content">
+            <div class="row">
+                <div class="col-xs-9" id="map"></div>
+                <div class="col-xs-3" id="mapInfo">
+                    <h4 id="mapInfoHeading">Activity</h4>
+                    <h5>asdjfdsafbsdf</h5>
+                    <h5>asdjfdsafbsdf</h5>
+                    <h5>asdjfdsafbsdf</h5>
+                    <h5>asdjfdsafbsdf</h5>
+                    <h5>asdjfdsafbsdf</h5>
+                </div>
+            </div>
+        </div>
     </main>
 </div>
 
@@ -43,7 +56,6 @@
 <script src="{%  static 'js/getmdl-select.js' %}"></script>
 <script src="{%  static 'js/mdl-jquery-modal-dialog.js' %}"></script>
 <script src="{%  static 'js/cookie.js' %}"></script>
-<script src="{%  static 'js/login-validate.js' %}"></script>
 
 <script>
     $(document).ready(function() {
@@ -51,7 +63,7 @@
             window.location.replace("/login");
         } else {
             Cookies.set("icc_driver_login", Cookies.get("icc_driver_login")); // Reset
-           $("label[for='user_name_label']").html(Cookies.get("icc_driver_login"));
+            $("label[for='user_name_label']").html(Cookies.get("icc_driver_login"));
         }
     });
 
@@ -60,6 +72,61 @@
         window.location.replace("/login");
     });
 </script>
+
+{# Google Maps Stuff #}
+<script>
+    var map;
+    var defaultPosition = {lat: 43.0392, lng: -76.1351};
+    var ice_cream_icons = ["{%  static 'images/ice-cream-icon-1.png' %}",
+        "{%  static 'images/ice-cream-icon-2.png' %}"];
+    var currentLocation = "{%  static 'images/current_location.png' %}";
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: defaultPosition,
+            zoom: 13
+        });
+
+        var marker = new google.maps.Marker({
+            position: defaultPosition,
+            map: map,
+            icon: currentLocation
+            {#icon: ice_cream_icons[Math.floor(Math.random() * ice_cream_icons.length)]#}
+        });
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var currentPosition = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                map.setCenter(currentPosition);
+                marker.setPosition(currentPosition);
+            }, function() {
+                handleLocationError(true, infoWindow, map.getCenter());
+            });
+        } else {
+            // Browser doesn't support Geolocation
+            alert("Oops...Your browser doesn't support Geolocation. Please allow access if requested.")
+        }
+    }
+
+    function addMarker(coords) {
+        new google.maps.Marker({
+            position: coords,
+            map: map,
+            icon: ice_cream_icons[Math.floor(Math.random() * ice_cream_icons.length)]
+        });
+    }
+
+    setInterval(function() {
+        addMarker({lat: 43.0384, lng: -76.13261});
+    }, 10 * 1000); // 60 * 1000 milsec
+
+</script>
+
+{#<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwqXAdOf3z2WaraTsP3kxZHVlAJF6C-bM&callback=initMap"#}
+{#        async defer></script>#}
 
 </body>
 </html>

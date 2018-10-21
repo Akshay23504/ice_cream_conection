@@ -1,6 +1,7 @@
 {%  load static %}
 
-<!doctype HTML>
+{# Do not write doctype #}
+
 <html>
 
 <head>
@@ -12,6 +13,7 @@
     <link rel="stylesheet" href="{%  static 'css/material.min.css' %}">
     <link rel="stylesheet" href="{%  static 'css/getmdl-select.scss' %}">
     <link rel="stylesheet" href="{%  static 'css/mdl-jquery-modal-dialog.css' %}">
+    <link rel="stylesheet" href="{%  static 'css/dashboard.css' %}">
     <title>Ice Cream CONEction - Customer Dashboard</title>
 </head>
 
@@ -33,7 +35,16 @@
         </div>
     </header>
     <main class="mdl-layout__content">
-        <div class="page-content"><!-- Your content goes here --></div>
+        <div class="page-content">
+            <div class="row">
+                <div class="column" id="map">
+
+                </div>
+                <div class="column" id="mapInfo">
+
+                </div>
+            </div>
+        </div>
     </main>
 </div>
 
@@ -43,7 +54,6 @@
 <script src="{%  static 'js/getmdl-select.js' %}"></script>
 <script src="{%  static 'js/mdl-jquery-modal-dialog.js' %}"></script>
 <script src="{%  static 'js/cookie.js' %}"></script>
-<script src="{%  static 'js/login-validate.js' %}"></script>
 
 <script>
     $(document).ready(function() {

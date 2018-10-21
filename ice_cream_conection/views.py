@@ -1,7 +1,7 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
 from urllib.parse import unquote
+
 from ice_cream_conection.models import Profile, Role
 
 
