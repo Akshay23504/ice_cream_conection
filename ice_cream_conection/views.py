@@ -9,12 +9,12 @@ class LoginView(TemplateView):
     template_name = 'login.html'
 
 
-class CustomerDashboardView(TemplateView):
-    template_name = 'customer_dashboard.html'
+# class CustomerDashboardView(TemplateView):
+#     template_name = 'customer_dashboard.html'
 
 
-class DriverDashboardView(TemplateView):
-    template_name = 'driver_dashboard.html'
+# class DriverDashboardView(TemplateView):
+#     template_name = 'driver_dashboard.html'
 
 
 def get_user_details(backend, strategy, details, response, request, user=None, *args, **kwargs):
@@ -47,11 +47,11 @@ def get_user_details(backend, strategy, details, response, request, user=None, *
                 return response
 
     if driver:
-        response = HttpResponseRedirect("/dashboard/driver/")
+        response = HttpResponseRedirect("http://localhost:4200")
         response.set_cookie("icc_driver_login", details['first_name'] + " " + details['last_name'])
         return response
     else:
-        response = HttpResponseRedirect("/dashboard/customer/")
+        response = HttpResponseRedirect("http://localhost:4200")
         response.set_cookie("icc_customer_login", details['first_name'] + " " + details['last_name'])
         return response
 

@@ -39,11 +39,13 @@
                 <div class="col-xs-9" id="map"></div>
                 <div class="col-xs-3" id="mapInfo">
                     <h4 id="mapInfoHeading">Activity</h4>
-                    <h5>asdjfdsafbsdf</h5>
-                    <h5>asdjfdsafbsdf</h5>
-                    <h5>asdjfdsafbsdf</h5>
-                    <h5>asdjfdsafbsdf</h5>
-                    <h5>asdjfdsafbsdf</h5>
+                    <h5 style="color: green">5 ice cream trucks found nearby</h5>
+                    <h5 style="color: blue">3 ice cream trucks have your favorite ice cream in their inventory</h5>
+                    <h5 style="color: orangered">1 ice cream truck has only vanilla left</h5>
+                    <h5 style="color: chocolate">2 ice trucks have chocolate and its flavors...sounds yummy!</h5>
+                    <h5 style="color: deeppink">3 ice trucks have strawberry</h5>
+                    <h5 style="color: yellowgreen">Looks like there is 1 ice cream truck new to the area</h5>
+                    <h5></h5>
                 </div>
             </div>
         </div>
@@ -109,19 +111,40 @@
             // Browser doesn't support Geolocation
             alert("Oops...Your browser doesn't support Geolocation. Please allow access if requested.")
         }
+
+        var infowindow = new google.maps.InfoWindow({
+          content: '<h3 style="color: blue">Cuse Creams</h3>' +
+              '<p style="color: chocolate">Chocolate: Plenty</p>' +
+              '<p style="color: pink">Strawberry: Plenty</p>' +
+              '<p style="color: deeppink">Sundaes: In stock</p>' +
+              '<p style="color: brown">Fudge: Running out</p>' +
+              'And plenty more flavors...' +
+              '<h4 style="color: orange">Get one extra free scoop - only for Syracuse students!</h4>'
+        });
+
+        addMarker({lat: 43.0649, lng: -76.12130}, infowindow);
+        addMarker({lat: 43.0487, lng: -76.12388}, infowindow);
+        addMarker({lat: 43.0380, lng: -76.12536}, infowindow);
+        addMarker({lat: 43.0414, lng: -76.14591}, infowindow);
+        addMarker({lat: 43.0373, lng: -76.10234}, infowindow);
     }
 
-    function addMarker(coords) {
-        new google.maps.Marker({
+    function addMarker(coords, infoWindow) {
+        var marker = new google.maps.Marker({
             position: coords,
             map: map,
+            title: 'Cuse Creams',
             icon: ice_cream_icons[Math.floor(Math.random() * ice_cream_icons.length)]
+        });
+        marker.addListener('click', function() {
+           infoWindow.open(map, marker);
         });
     }
 
-    setInterval(function() {
-        addMarker({lat: 43.0384, lng: -76.13261});
-    }, 10 * 1000); // 60 * 1000 milsec
+//    setInterval(function() {
+
+  //  }, 1 * 1000); // 60 * 1000 milsec
+
 
 </script>
 
