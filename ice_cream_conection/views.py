@@ -1,3 +1,5 @@
+from math import radians, sin, cos, asin, sqrt
+
 import json
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -61,6 +63,21 @@ def get_user_details(backend, strategy, details, response, request, user=None, *
         return response
 
 
+def haversine(truck_latitude, truck_longitude, customer_latitude, customer_longitude):
+    radius = 2.5  # In Kilometer
+    # Degree to radians
+    truck_latitude, truck_longitude, customer_latitude, customer_longitude = \
+        map(radians, [truck_latitude, truck_longitude, customer_latitude, customer_longitude])
+
+    # Haversine formula
+    d_latitude = customer_latitude - truck_latitude
+    d_longitude = customer_longitude - truck_longitude
+    a = sin(d_latitude / 2) ** 2 + cos(truck_latitude) * cos(customer_latitude) * sin(d_longitude / 2) ** 2
+    c = 2 * asin(sqrt(a))
+    r = 6371  # Radius of earth in kilometers
+    return c * r <= radius
+
+
 @csrf_exempt
 def truck_update_coordinate(request):
     if request.method == "POST":
@@ -120,6 +137,23 @@ def truck_get_customers(request):
     if request.method == "POST":
         body = json.loads(request.body)
         body["success"] = True
+        # First update the truck with its coordinates
+        result = Coordinates.objects.filter(user_id=body['truck_id'])
+        if not result.exists() or result[0].user_id.role != str(Role.driver):
+            body["success"] = False
+            return JsonResponse(body)
+        coordinates = result[0]
+        coordinates.latitude = truck_latitude = body["latitude"]
+        coordinates.longitude = truck_longitude = body["longitude"]
+        coordinates.save()
+
+        # Get all customers within a radius
+        result = Coordinates.objects.filter(user_id__role=str(Role.customer)).values()
+        result = [entry for entry in result]  # Convert queryset to list
+        body["customers"] = []
+        for i in range(len(result)):
+            if haversine(truck_latitude, truck_longitude, result[i]['latitude'], result[i]['longitude']):
+                body["customers"].append(result[i])
         return JsonResponse(body)
     else:
         return HttpResponse(status=405)
