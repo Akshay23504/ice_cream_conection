@@ -65,9 +65,16 @@ def get_user_details(backend, strategy, details, response, request, user=None, *
 def truck_update_coordinate(request):
     if request.method == "POST":
         body = json.loads(request.body)
-        print(body)
-        print(body["user_id"])
-        return JsonResponse({"success": "true"})
+        body["success"] = True
+        result = Coordinates.objects.filter(user_id=body['user_id'])
+        if not result.exists() or result[0].user_id.role != str(Role.driver):
+            body["success"] = False
+            return JsonResponse(body)
+        coordinates = result[0]
+        coordinates.latitude = body["latitude"]
+        coordinates.longitude = body["longitude"]
+        coordinates.save()
+        return JsonResponse(body)
     else:
         return HttpResponse(status=405)
 
@@ -76,8 +83,34 @@ def truck_update_coordinate(request):
 def customer_update_coordinate(request):
     if request.method == "POST":
         body = json.loads(request.body)
-        print(body)
-        print(body["user_id"])
-        return JsonResponse({"success": "true"})
+        body["success"] = True
+        result = Coordinates.objects.filter(user_id=body['user_id'])
+        if not result.exists() or result[0].user_id.role != str(Role.customer):
+            body["success"] = False
+            return JsonResponse(body)
+        coordinates = result[0]
+        coordinates.latitude = body["latitude"]
+        coordinates.longitude = body["longitude"]
+        coordinates.save()
+        return JsonResponse(body)
     else:
         return HttpResponse(status=405)
+
+
+@csrf_exempt
+def new_destination(request):
+    if request.method == "POST":
+        body = json.loads(request.body)
+        body["success"] = True
+        result = Coordinates.objects.filter(user_id=body['truck_id'])
+        if not result.exists() or result[0].user_id.role != str(Role.driver):
+            body["success"] = False
+            return JsonResponse(body)
+        coordinates = result[0]
+        coordinates.destination_latitude = body["latitude"]
+        coordinates.destination_longitude = body["longitude"]
+        coordinates.save()
+        return JsonResponse(body)
+    else:
+        return HttpResponse(status=405)
+
