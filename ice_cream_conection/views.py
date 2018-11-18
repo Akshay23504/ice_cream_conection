@@ -98,7 +98,7 @@ def customer_update_coordinate(request):
 
 
 @csrf_exempt
-def new_destination(request):
+def truck_new_destination(request):
     if request.method == "POST":
         body = json.loads(request.body)
         body["success"] = True
@@ -114,3 +114,32 @@ def new_destination(request):
     else:
         return HttpResponse(status=405)
 
+
+@csrf_exempt
+def truck_get_customers(request):
+    if request.method == "POST":
+        body = json.loads(request.body)
+        body["success"] = True
+        return JsonResponse(body)
+    else:
+        return HttpResponse(status=405)
+
+
+@csrf_exempt
+def truck_send_customers(request):
+    if request.method == "POST":
+        body = json.loads(request.body)
+        body["success"] = True
+        return JsonResponse(body)
+    else:
+        return HttpResponse(status=405)
+
+
+@csrf_exempt
+def truck_reached_destination(request):
+    if request.method == "POST":
+        body = json.loads(request.body)
+        body["success"] = True
+        return JsonResponse(body)
+    else:
+        return HttpResponse(status=405)
