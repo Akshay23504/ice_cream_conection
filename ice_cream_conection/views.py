@@ -188,6 +188,15 @@ def truck_reached_destination(request):
     if request.method == "POST":
         body = json.loads(request.body)
         body["success"] = True
+
+        # Make all entries for this truck id false, because the truck reached destination and delicious ice cream
+        # is being served. So, mission complete.
+        TruckCustomer.objects.filter(truck_id=body["truck_id"], valid=True).update(valid=False)
+
+        # Also make destination coordinates null. I don't think this is needed at all, but ehhh...just 1 line of code
+        Coordinates.objects.filter(user_id=body["truck_id"]).update(
+            destination_latitude=None, destination_longitude=None)
+
         return JsonResponse(body)
     else:
         return HttpResponse(status=405)
