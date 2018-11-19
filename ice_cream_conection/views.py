@@ -83,7 +83,7 @@ def truck_update_coordinate(request):
     if request.method == "POST":
         body = json.loads(request.body)
         body["success"] = True
-        result = Coordinates.objects.filter(user_id=body['user_id'])
+        result = Coordinates.objects.filter(user_id=body['truck_id'])
         if not result.exists() or result[0].user_id.role != str(Role.driver):
             body["success"] = False
             return JsonResponse(body)
@@ -101,7 +101,7 @@ def customer_update_coordinate(request):
     if request.method == "POST":
         body = json.loads(request.body)
         body["success"] = True
-        result = Coordinates.objects.filter(user_id=body['user_id'])
+        result = Coordinates.objects.filter(user_id=body['customer_id'])
         if not result.exists() or result[0].user_id.role != str(Role.customer):
             body["success"] = False
             return JsonResponse(body)
