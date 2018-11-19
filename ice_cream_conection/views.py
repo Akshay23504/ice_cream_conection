@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from urllib.parse import unquote
 
-from ice_cream_conection.models import Profile, Role, Coordinates
+from ice_cream_conection.models import Profile, Role, Coordinates, TruckCustomer
 
 
 class LoginView(TemplateView):
@@ -137,6 +137,7 @@ def truck_get_customers(request):
     if request.method == "POST":
         body = json.loads(request.body)
         body["success"] = True
+
         # First update the truck with its coordinates
         result = Coordinates.objects.filter(user_id=body['truck_id'])
         if not result.exists() or result[0].user_id.role != str(Role.driver):
@@ -164,6 +165,19 @@ def truck_send_customers(request):
     if request.method == "POST":
         body = json.loads(request.body)
         body["success"] = True
+
+        # First make all entries for this truck id false
+        TruckCustomer.objects.filter(truck_id=body["truck_id"], valid=True).update(valid=False)
+
+        # Next add the customers who will be served by the truck
+        for i in range(len(body["customers"])):
+            # I know I know, I can do this in a batch...
+            truck_customer = TruckCustomer()
+            truck_customer.truck_id = body["truck_id"]
+            truck_customer.customer_id = body["customers"][i]
+            truck_customer.valid = True
+            truck_customer.save()
+
         return JsonResponse(body)
     else:
         return HttpResponse(status=405)
