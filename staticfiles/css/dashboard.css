@@ -1,0 +1,12 @@
+#customer_logout_button, #driver_logout_button {
+    color: white;
+}
+
+#mapInfo {
+    height: 100%;
+}
+
+#mapInfoHeading {
+    text-align: center;
+    color: #3f51b5;
+}
