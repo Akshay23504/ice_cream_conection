@@ -27,6 +27,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
+os.environ['HTTPS'] = "on"
 
 # Application definition
 
