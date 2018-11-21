@@ -1,1 +1,1 @@
-web: gunicorn NLPSpring18UI.wsgi --log-file -
+web: gunicorn IceCreamConection.wsgi --log-file -
