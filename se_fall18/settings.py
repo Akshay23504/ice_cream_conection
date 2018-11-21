@@ -25,9 +25,7 @@ SECRET_KEY = 'o13oqqn3fr=3_v&%x%4db)yl+f%=)v=-yyo3!_zkoa90u)=m+j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
-
-os.environ['HTTPS'] = "on"
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost', 'ice-cream-conection.herokuapp.com/']
 
 # Application definition
 
