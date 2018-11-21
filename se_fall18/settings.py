@@ -135,6 +135,7 @@ WSGI_APPLICATION = 'se_fall18.wsgi.application'
 #     }
 # }
 
+
 in_heroku = False
 
 if 'DATABASE_URL' in os.environ:
@@ -149,6 +150,7 @@ else:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
