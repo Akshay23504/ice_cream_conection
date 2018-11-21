@@ -89,7 +89,8 @@
                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="terms_flag">
                         <input type="checkbox" id="terms_flag" class="mdl-checkbox__input">
                         <span class="mdl-checkbox__label ">I have read and accept the
-                            <a id="terms_flag_a_tag">Terms of Use</a> and <a href="# ">Privacy Policy</a></span>
+                            <a id="terms_flag_a_tag">Terms of Use</a> and <a id="privacy_flag_a_tag">Privacy Policy</a>
+                        </span>
                     </label>
                 </div>
 
@@ -152,8 +153,15 @@
 </script>
 
 <script>
-    var terms_text = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.';
+    var terms_text = '';
     $('#terms_flag_a_tag').click(function () {
+        showDialog({
+            title: 'Terms of Use',
+            text: terms_text
+        })
+    });
+
+    $('#privacy_flag_a_tag').click(function () {
         showDialog({
             title: 'Terms of Use',
             text: terms_text
