@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^truck/getCustomers/$', views.truck_get_customers, name='truck_get_customers'),
     url(r'^truck/sendCustomers/$', views.truck_send_customers, name='truck_send_customers'),
     url(r'^truck/reachedDestination/$', views.truck_reached_destination, name='truck_reached_destination'),
+    url(r'^mapsPage/$', views.MapsPageView.as_view(), name='ui_page'),
     # url(r'^dashboard/customer/$', views.CustomerDashboardView.as_view(), name='customer_dashboard'),
     # url(r'^dashboard/driver/$', views.DriverDashboardView.as_view(), name='driver_dashboard'),
 ]

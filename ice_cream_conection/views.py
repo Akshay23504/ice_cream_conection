@@ -21,6 +21,10 @@ class LoginView(TemplateView):
 #     template_name = 'driver_dashboard.html'
 
 
+class MapsPageView(TemplateView):
+    template_name = 'maps_page.html'
+
+
 def get_user_details(backend, strategy, details, response, request, user=None, *args, **kwargs):
     driver = False
     if "icc_role_selected" in request.COOKIES:
@@ -54,11 +58,13 @@ def get_user_details(backend, strategy, details, response, request, user=None, *
                 return response
 
     if driver:
-        response = HttpResponseRedirect("http://localhost:4200")
+        # response = HttpResponseRedirect("http://localhost:4200")
+        response = HttpResponseRedirect("/mapsPage/")
         response.set_cookie("icc_driver_login", details['first_name'] + " " + details['last_name'])
         return response
     else:
-        response = HttpResponseRedirect("http://localhost:4200")
+        # response = HttpResponseRedirect("http://localhost:4200")
+        response = HttpResponseRedirect("/mapsPage/")
         response.set_cookie("icc_customer_login", details['first_name'] + " " + details['last_name'])
         return response
 
