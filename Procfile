@@ -1,1 +1,1 @@
-web: gunicorn IceCreamConection.wsgi --log-file -
+web: gunicorn se_fall18.wsgi --log-file -
