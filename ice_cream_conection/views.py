@@ -59,7 +59,7 @@ def get_user_details(backend, strategy, details, response, request, user=None, *
 
     if driver:
         # response = HttpResponseRedirect("http://localhost:4200")
-        response = HttpResponseRedirect("/mapsPage/")
+        # response = HttpResponseRedirect("/mapsPage/")
         response = HttpResponseRedirect("https://ice-cream-conection-ui.herokuapp.com/")
         response.set_cookie("icc_driver_login", details['first_name'] + " " + details['last_name'])
         return response
