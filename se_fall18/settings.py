@@ -27,6 +27,12 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost', 'ice-cream-conection.herokuapp.com']
 
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+    'http//:localhost:4200',
+    'https//:ice-cream-conection.herokuapp.com',
+)
+
 # os.environ['HTTPS'] = "on"
 
 # Application definition
