@@ -21,10 +21,11 @@ class LoginView(TemplateView):
 #     template_name = 'driver_dashboard.html'
 
 
-class MapsPageView(TemplateView):
-    template_name = 'maps_page.html'
+# class MapsPageView(TemplateView):
+#     template_name = 'maps_page.html'
 
 
+# TODO: Comment
 def get_user_details(backend, strategy, details, response, request, user=None, *args, **kwargs):
     driver = False
     if "icc_role_selected" in request.COOKIES:
@@ -37,7 +38,7 @@ def get_user_details(backend, strategy, details, response, request, user=None, *
         profile.last_name = details['last_name']
         profile.email = details['email']
         if driver:
-            profile.role = Role.driver
+            profile.role = Role.truck
         else:
             profile.role = Role.customer
         profile.save()
@@ -47,7 +48,7 @@ def get_user_details(backend, strategy, details, response, request, user=None, *
     else:
         result = Profile.objects.filter(email=details['email'])
         if driver:
-            if result[0].role != str(Role.driver):
+            if result[0].role != str(Role.truck):
                 response = HttpResponseRedirect("/login/")
                 response.set_cookie("icc_invalid_role", "User email and role do not match")
                 return response
@@ -91,7 +92,7 @@ def truck_update_coordinate(request):
         body = json.loads(request.body)
         body["success"] = True
         result = Coordinates.objects.filter(user_id=body['truck_id'])
-        if not result.exists() or result[0].user_id.role != str(Role.driver):
+        if not result.exists() or result[0].user_id.role != str(Role.truck):
             body["success"] = False
             return JsonResponse(body)
         coordinates = result[0]
@@ -127,7 +128,7 @@ def truck_new_destination(request):
         body = json.loads(request.body)
         body["success"] = True
         result = Coordinates.objects.filter(user_id=body['truck_id'])
-        if not result.exists() or result[0].user_id.role != str(Role.driver):
+        if not result.exists() or result[0].user_id.role != str(Role.truck):
             body["success"] = False
             return JsonResponse(body)
         coordinates = result[0]
@@ -147,7 +148,7 @@ def truck_get_customers(request):
 
         # First update the truck with its coordinates
         result = Coordinates.objects.filter(user_id=body['truck_id'])
-        if not result.exists() or result[0].user_id.role != str(Role.driver):
+        if not result.exists() or result[0].user_id.role != str(Role.truck):
             body["success"] = False
             return JsonResponse(body)
         coordinates = result[0]
@@ -162,6 +163,34 @@ def truck_get_customers(request):
         for i in range(len(result)):
             if haversine(truck_latitude, truck_longitude, result[i]['latitude'], result[i]['longitude']):
                 body["customers"].append(result[i])
+        return JsonResponse(body)
+    else:
+        return HttpResponse(status=405)
+
+
+@csrf_exempt
+def customer_get_trucks(request):
+    if request.method == "POST":
+        body = json.loads(request.body)
+        body["success"] = True
+
+        # First update the customer with their coordinates
+        result = Coordinates.objects.filter(user_id=body['customer_id'])
+        if not result.exists() or result[0].user_id.role != str(Role.customer):
+            body["success"] = False
+            return JsonResponse(body)
+        coordinates = result[0]
+        coordinates.latitude = customer_latitude = body["latitude"]
+        coordinates.longitude = customer_longitude = body["longitude"]
+        coordinates.save()
+
+        # Get all trucks within a radius
+        result = Coordinates.objects.filter(user_id__role=str(Role.truck)).values()
+        result = [entry for entry in result]  # Convert queryset to list
+        body["trucks"] = []
+        for i in range(len(result)):
+            if haversine(customer_latitude, customer_longitude, result[i]['latitude'], result[i]['longitude']):
+                body["trucks"].append(result[i])
         return JsonResponse(body)
     else:
         return HttpResponse(status=405)
@@ -207,3 +236,35 @@ def truck_reached_destination(request):
         return JsonResponse(body)
     else:
         return HttpResponse(status=405)
+
+
+@csrf_exempt
+def get_all_customers(request):
+    if request.method == "POST":
+        body = json.loads(request.body)
+        body["success"] = True
+
+        result = Profile.objects.filter(role=str(Role.customer)).values()
+        result = [entry for entry in result]  # Convert queryset to list
+        body["customers"] = result
+
+        return JsonResponse(body)
+    else:
+        return HttpResponse(status=405)
+
+
+@csrf_exempt
+def get_all_trucks(request):
+    if request.method == "POST":
+        body = json.loads(request.body)
+        body["success"] = True
+
+        result = Profile.objects.filter(role=str(Role.truck)).values()
+        result = [entry for entry in result]  # Convert queryset to list
+        body["customers"] = result
+
+        return JsonResponse(body)
+    else:
+        return HttpResponse(status=405)
+
+
