@@ -15,6 +15,7 @@ class Profile(models.Model):
     email = models.EmailField(null=True)
     role = models.CharField(max_length=100, default=Role.truck)
     created_time = models.DateTimeField(default=datetime.datetime.now())
+    served_by_id = models.IntegerField(null=True)
 
 
 class Coordinates(models.Model):
@@ -23,7 +24,6 @@ class Coordinates(models.Model):
     longitude = models.FloatField(null=True)
     destination_latitude = models.FloatField(null=True)
     destination_longitude = models.FloatField(null=True)
-    served_by_id = models.IntegerField(null=True)
 
 
 class TruckCustomer(models.Model):

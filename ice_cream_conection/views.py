@@ -1,5 +1,7 @@
+import time
 from math import radians, sin, cos, asin, sqrt
 
+import datetime
 import json
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -205,7 +207,7 @@ def truck_send_customers(request):
         # First make all entries for this truck id false
         TruckCustomer.objects.filter(truck_id=body["truck_id"], valid=True).update(valid=False)
 
-        # Next add the customers who will be served by the truck
+        # Next add the customers who will be served by the truck and update served by entries
         for i in range(len(body["customers"])):
             # I know I know, I can do this in a batch...
             truck_customer = TruckCustomer()
@@ -213,6 +215,14 @@ def truck_send_customers(request):
             truck_customer.customer_id = body["customers"][i]
             truck_customer.valid = True
             truck_customer.save()
+
+            result = Profile.objects.filter(id=body["customers"][i])
+            profile = result[0]
+            profile.served_by_id = body["truck_id"]
+            # This is not needed if the customer signs up. But for mocking, we create entries directly.
+            if profile.created_time is None:
+                profile.created_time = datetime.datetime.now()
+            profile.save()
 
         return JsonResponse(body)
     else:
@@ -232,6 +242,15 @@ def truck_reached_destination(request):
         # Also make destination coordinates null. I don't think this is needed at all, but ehhh...just 1 line of code
         Coordinates.objects.filter(user_id=body["truck_id"]).update(
             destination_latitude=None, destination_longitude=None)
+
+        result = Profile.objects.filter(served_by_id=body["truck_id"])
+        for r in result:
+            profile = r
+            profile.served_by_id = None
+            # This is not needed if the customer signs up. But for mocking, we create entries directly.
+            if profile.created_time is None:
+                profile.created_time = datetime.datetime.now()
+            profile.save()
 
         return JsonResponse(body)
     else:
