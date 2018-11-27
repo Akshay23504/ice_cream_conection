@@ -264,5 +264,3 @@ def get_all_trucks(request):
         return JsonResponse(body)
     else:
         return HttpResponse(status=405)
-
-
