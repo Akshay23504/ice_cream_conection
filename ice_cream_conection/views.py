@@ -241,8 +241,7 @@ def truck_reached_destination(request):
 @csrf_exempt
 def get_all_customers(request):
     if request.method == "POST":
-        body = json.loads(request.body)
-        body["success"] = True
+        body = {"success": True}
 
         result = Profile.objects.filter(role=str(Role.customer)).values()
         result = [entry for entry in result]  # Convert queryset to list
@@ -256,12 +255,11 @@ def get_all_customers(request):
 @csrf_exempt
 def get_all_trucks(request):
     if request.method == "POST":
-        body = json.loads(request.body)
-        body["success"] = True
+        body = {"success": True}
 
         result = Profile.objects.filter(role=str(Role.truck)).values()
         result = [entry for entry in result]  # Convert queryset to list
-        body["customers"] = result
+        body["trucks"] = result
 
         return JsonResponse(body)
     else:
