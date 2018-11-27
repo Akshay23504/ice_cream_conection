@@ -283,3 +283,20 @@ def get_all_trucks(request):
         return JsonResponse(body)
     else:
         return HttpResponse(status=405)
+
+
+@csrf_exempt
+def get_all_customers_for_truck(request):
+    if request.method == "POST":
+        body = json.loads(request.body)
+        body["success"] = True
+        body["customers"] = []
+
+        result = TruckCustomer.objects.filter(truck_id=body["truck_id"], valid=True)
+        for r in result:
+            body["customers"].append(r.customer_id)
+
+        return JsonResponse(body)
+    else:
+        return HttpResponse(status=405)
+

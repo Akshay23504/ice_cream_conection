@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^customer/getTrucks/$', views.customer_get_trucks, name='customer_get_trucks'),
     url(r'^truck/sendCustomers/$', views.truck_send_customers, name='truck_send_customers'),
     url(r'^truck/reachedDestination/$', views.truck_reached_destination, name='truck_reached_destination'),
+    url(r'^truck/getCustomerRequests/$', views.get_all_customers_for_truck, name='get_all_customers_for_truck'),
     url(r'^customers/all/$', views.get_all_customers, name='get_all_customers'),
     url(r'^trucks/all/$', views.get_all_trucks, name='get_all_trucks'),
     # url(r'^mapsPage/$', views.MapsPageView.as_view(), name='ui_page'),
