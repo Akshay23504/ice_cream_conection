@@ -1,4 +1,3 @@
-import time
 from math import radians, sin, cos, asin, sqrt
 
 import datetime
@@ -672,4 +671,3 @@ def get_all_customers_for_truck(request):
     else:
         # Return method not allowed
         return HttpResponse(status=405)
-
