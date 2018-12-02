@@ -135,6 +135,7 @@ def get_user_details(backend, strategy, details, response, request, user=None, *
     else:
         # This is for existing customers
         result = Profile.objects.filter(email=details['email'])
+        print(result[0])
         # Needed for future
         user_id = result[0].id
         """
@@ -145,13 +146,21 @@ def get_user_details(backend, strategy, details, response, request, user=None, *
         
         """
         if driver:
+            print("In driver")
             if result[0].role != str(Role.truck):
+                print(result[0].role)
+                print(str(Role.truck))
+                print(result[0].role != str(Role.truck))
                 # Very less probability of coming here
                 response = HttpResponseRedirect("/login/")
                 response.set_cookie("icc_invalid_role", "User email and role do not match")
                 return response
         else:
+            print("In customer")
             if result[0].role != str(Role.customer):
+                print(result[0].role)
+                print(str(Role.truck))
+                print(result[0].role != str(Role.truck))
                 # Very less probability of coming here
                 response = HttpResponseRedirect("/login/")
                 response.set_cookie("icc_invalid_role", "User email and role do not match")
