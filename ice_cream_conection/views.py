@@ -30,6 +30,7 @@ class LoginView(TemplateView):
 # TODO: Comment
 def get_user_details(backend, strategy, details, response, request, user=None, *args, **kwargs):
     driver = False
+    user_id = 0  # Default
     if "icc_role_selected" in request.COOKIES:
         if "driver" in unquote(request.COOKIES.get('icc_role_selected')):
             driver = True
@@ -47,8 +48,10 @@ def get_user_details(backend, strategy, details, response, request, user=None, *
         coordinates = Coordinates()
         coordinates.user_id = profile
         coordinates.save()
+        user_id = profile.id
     else:
         result = Profile.objects.filter(email=details['email'])
+        user_id = result[0].id
         if driver:
             if result[0].role != str(Role.truck):
                 response = HttpResponseRedirect("/login/")
@@ -63,12 +66,14 @@ def get_user_details(backend, strategy, details, response, request, user=None, *
     if driver:
         # response = HttpResponseRedirect("http://localhost:4200")
         # response = HttpResponseRedirect("/mapsPage/")
-        response = HttpResponseRedirect("https://ice-cream-conection-ui.herokuapp.com/")
+        response = HttpResponseRedirect("https://ice-cream-conection-ui.herokuapp.com/truck/dashboard?userId=" +
+                                        str(user_id))
         response.set_cookie("icc_driver_login", details['first_name'] + " " + details['last_name'])
         return response
     else:
         # response = HttpResponseRedirect("http://localhost:4200")
-        response = HttpResponseRedirect("https://ice-cream-conection-ui.herokuapp.com/")
+        response = HttpResponseRedirect("https://ice-cream-conection-ui.herokuapp.com/customer/dashboard?userId=" +
+                                        str(user_id))
         response.set_cookie("icc_customer_login", details['first_name'] + " " + details['last_name'])
         return response
 
