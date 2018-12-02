@@ -6,6 +6,10 @@ from . import views
 
 admin.autodiscover()
 
+"""
+Contains all the URLs or API endpoints. Pretty straight-forward!
+"""
+
 urlpatterns = [
     url(r'^$', RedirectView.as_view(url='/login/'), name='index'),
     url(r'^login/$', views.LoginView.as_view(), name='login'),
