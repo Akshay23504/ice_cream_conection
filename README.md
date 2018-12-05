@@ -53,9 +53,10 @@
 
 ##### Recommended
 
-* Clone the repository
+* Clone the repository from https://github.com/Akshay23504/ice_cream_conection
 * Open and import it as a Django project in PyCharm
 * Run the app
+* Go to *http://localhost:8000/*
 
 ##### Alternate way
 
@@ -64,8 +65,11 @@
 * Run *pip instal Django*
 * From the command line, *cd* into a directory where you'd like to store the code
 * Run *django-admin startproject se_fall18*
-* Clone the project into the newly created directory. *https://github.com/Akshay23504/ice_cream_conection.git*
+* Clone the project into the newly created directory. Code: *https://github.com/Akshay23504/ice_cream_conection.git*
 * Run *python manage.py runserver*
+* Go to *http://localhost:8000/*
 
 The cloud version of this project can be found at: https://ice-cream-conection.herokuapp.com
+
+The code can be found at: https://github.com/Akshay23504/ice_cream_conection
 
