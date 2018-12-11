@@ -663,8 +663,10 @@ def get_all_customers_for_truck(request):
 
         result = TruckCustomer.objects.filter(truck_id=body["truck_id"], valid=True)
         for r in result:
-            # Append all the customer ids to an array in the body
-            body["customers"].append(r.customer_id)
+            # Get the customer coordinates data
+            coordinates = Coordinates.objects.filter(user_id__id=r.customer_id).values()
+            # Append all the customer data to an array in the body
+            body["customers"].append(coordinates[0])
 
         # Return the body JSON
         return JsonResponse(body)
